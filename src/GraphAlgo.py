@@ -9,6 +9,7 @@ class GraphAlgoInterface:
         self.graph = {}
         self.p = 0
         self.G = 0
+        self.x = 0
 
     def get_graph(self) -> GraphInterface:
      return self.graph
