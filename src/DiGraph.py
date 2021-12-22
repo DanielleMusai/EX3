@@ -5,7 +5,7 @@ class DiGraph():
         self.mc = 0
 
     def __repr__(self):
-        return "nodes:" + str(self.v_size()) + " , edges:" + str(self.e_size())
+            return "nodes:{} edges:{}".format(str(self.v_size()), str(self.e_size()))
 
     def v_size(self) -> int:
         return len(self.nodes)
@@ -76,15 +76,17 @@ if __name__ == '__main__':
     g = DiGraph()
     # file= '../data/A5.json'
     # # g.load_from_json("A3.json")
-    for n in range(3):
+    for n in range(10):
      g.add_node(n)
     g.add_edge(0, 1, 1)
     g.add_edge(1, 0, 1.1)
     g.add_edge(1, 2, 1.3)
     # g.add_edge(2, 3, 1.1)
     # g.add_edge(1, 3, 1.9)
-    # g.remove_edge(1, 3)
-    # g.add_edge(1, 3, 10)
+    # g.remove_edge(1,0)
+    g.add_edge(1, 3, 10)
+    g.remove_node(1)
+
     print(g)  # prints the __repr__ (func output)
     print(g.get_all_v())  # prints a dict with all the graph's vertices.
     # print(g.all_in_edges_of_node(1))
