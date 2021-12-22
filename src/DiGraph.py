@@ -1,23 +1,23 @@
-class DiGraph():
+from src.GraphInterface import GraphInterface
+
+class DiGraph(GraphInterface):
+
     def __init__(self):
         self.nodes = {}
-        self.edges = 0
+        self.edges = {}
         self.mc = 0
-
-    def __repr__(self):
-            return "nodes:{} edges:{}".format(str(self.v_size()), str(self.e_size()))
 
     def v_size(self) -> int:
         return len(self.nodes)
 
     def e_size(self) -> int:
-        return self.edges
+        return len(self.edges)
 
-    def get_all_v(self):
+    def get_all_v(self) -> dict:
         return self.nodes
 
     def all_in_edges_of_node(self, id1: int) -> dict:
-        return self.nodes[id1].Edgein
+        return self.nodes[id1].Edgeout
 
     def all_out_edges_of_node(self, id1: int) -> dict:
         return self.nodes[id1].Edgeout
@@ -31,7 +31,6 @@ class DiGraph():
         self.nodes[id1].Edgeout[id2] = weight
         self.nodes[id2].Edgein[id1] = weight
         self.mc += 1
-        self.edges += 1
         return True
 
     def add_node(self, node_id: int, pos: tuple = None) -> bool:
@@ -43,7 +42,7 @@ class DiGraph():
 
 
     def remove_node(self, node_id: int) -> bool:
-        if self.nodes.__contains__(node_id):
+        if self.nodes._contains_(node_id):
               self.nodes.pop(node_id)
               self.mc+=1
               return True
@@ -57,6 +56,8 @@ class DiGraph():
             return True
         return False
 
+    def __repr__(self):
+        return f'{self.nodes} 'f'{self.edges}'
 
 
 class Node():
@@ -69,23 +70,23 @@ class Node():
 
 
     def __repr__(self):
-        return "src:{} dest: {} weight:{}".format(len(self.Edgein),len(self.Edgeout),self.weight)
+        return f'key = {self.id},' f'pos = {self.pos}'
 
 
 if __name__ == '__main__':
     g = DiGraph()
     # file= '../data/A5.json'
     # # g.load_from_json("A3.json")
-    for n in range(10):
+    for n in range(3):
      g.add_node(n)
     g.add_edge(0, 1, 1)
     g.add_edge(1, 0, 1.1)
     g.add_edge(1, 2, 1.3)
     # g.add_edge(2, 3, 1.1)
     # g.add_edge(1, 3, 1.9)
-    # g.remove_edge(1,0)
-    g.add_edge(1, 3, 10)
-    g.remove_node(1)
+    g.remove_edge(1,0)
+    # g.add_edge(1, 3, 10)
+    # g.remove_node(1)
 
     print(g)  # prints the __repr__ (func output)
     print(g.get_all_v())  # prints a dict with all the graph's vertices.
