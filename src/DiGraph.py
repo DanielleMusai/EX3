@@ -1,4 +1,3 @@
-
 class DiGraph():
     def __init__(self):
         self.nodes = {}
@@ -26,20 +25,20 @@ class DiGraph():
     def get_mc(self) -> int:
         return self.mc
 
-    def add_node(self, node_id: int, pos: tuple = None) -> bool:
-        if node_id in self.nodes:
-            return False
-        self.nodes[node_id] = Node(node_id, pos)
-        self.mc += 1
-        return True
-
     def add_edge(self, id1: int, id2: int, weight: float) -> bool:
         if self.nodes[id1] is None or self.nodes[id2] is None:
             return False
         self.nodes[id1].Edgeout[id2] = weight
         self.nodes[id2].Edgein[id1] = weight
-        self.mc+=1
-        self.edges+=1
+        self.mc += 1
+        self.edges += 1
+        return True
+
+    def add_node(self, node_id: int, pos: tuple = None) -> bool:
+        if node_id in self.nodes:
+            return False
+        self.nodes[node_id] = Node(node_id, pos)
+        self.mc += 1
         return True
 
 
@@ -61,28 +60,27 @@ class DiGraph():
 
 
 class Node():
-    def __init__(self, id: int, pos: tuple = None):
+    def __init__(self, id: int,weight:float, pos: tuple = None):
         self.id = id
         self.pos = pos
         self.Edgein = {}
         self.Edgeout = {}
-        self.weight = {}
+        self.weight = weight
 
 
     def __repr__(self):
-        return "src:" + str(self.Edgein) + " , dest:" + str(self.Edgeout)+", weight:"+ str(self.weight)
+        return "src:{} dest: {} weight:{}".format(len(self.Edgein),len(self.Edgeout),self.weight)
+
 
 if __name__ == '__main__':
     g = DiGraph()
     # file= '../data/A5.json'
     # # g.load_from_json("A3.json")
-    for n in range(4):
+    for n in range(3):
      g.add_node(n)
     g.add_edge(0, 1, 1)
     g.add_edge(1, 0, 1.1)
     g.add_edge(1, 2, 1.3)
-
-
     # g.add_edge(2, 3, 1.1)
     # g.add_edge(1, 3, 1.9)
     # g.remove_edge(1, 3)
