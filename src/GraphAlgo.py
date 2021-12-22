@@ -1,41 +1,41 @@
-import json
 from typing import List
-
 from src import GraphInterface
+import json
+class GraphAlgoInterface(GraphInterface):
+    def _int_(self,G :int=None ,node:int=None ,edge:int=None,weight:int=None):
+        GraphInterface._init_(self)
+        self.graph = G
+        self.node=node
+        self.edge=edge
+        self.weight=weight
 
-
-class GraphAlgoInterface:
-    def _init_(self):
-        self.graph = {}
-        self.p = 0
-        self.G = 0
-        self.x = 0
 
     def get_graph(self) -> GraphInterface:
-     return self.graph
+        return self.graph
 
     def load_from_json(self, file_name: str) -> bool:
-        dict={}
-        with open(file_name, "r") as f:
-            dict = json.load(f)
-        for n in dict["nodes"].values():
-            self.add_node(n["id"], (n['pos']['x'], n['pos']['y']))
-        for src, out in dict["edges"].items():
-            for dest, w in out.items():
-                print(src, dest, w)
-                self.connect(int(src), int(dest), w)
-            return True
-        return False
-
-    def save_to_json(self, file_name: str) -> bool:
         try:
-            with open(file_name, 'w') as f:
-                json.dump(self, indent=2, fp=f, default=lambda a: a.__dict__)
+            with open(file_name, "r") as f:
+                new_g={}
+                my_d=json.load(f)
+                self.node=my_d["Nodes"]
+                Edges_d=my_d["Edges"]
+                for k,v in Edges_d.items():
+                    g = GraphInterface(src=v["src"],w=v["w"],dest=v["dest"])
+                    new_g[g.w]=g
+                self.graph=new_g
+                return True
         except IOError as e:
             print(e)
             return False
-        return True
 
+
+    def save_to_json(self, file_name: str) -> bool:
+       try:
+           with open(file_name, "w") as f:
+               json.dump(self, indent=4, fp=f,defult=lambda a:a._dict_)
+       except IOError as false:
+        return false
 
 
     def shortest_path(self, id1: int, id2: int) -> (float, list):
@@ -63,6 +63,11 @@ class GraphAlgoInterface:
         """
         raise NotImplementedError
 
+    # def iterator(self, )->:
+    # 
+    # def Dijkstras(self,)->:
+        
+
     def TSP(self, node_lst: List[int]) -> (List[int], float):
         """
         Finds the shortest path that visits all the nodes in the list
@@ -71,10 +76,6 @@ class GraphAlgoInterface:
         """
 
     def centerPoint(self) -> (int, float):
-
-
-
-
         """
         Finds the node that has the shortest distance to it's farthest node.
         :return: The nodes id, min-maximum distance
