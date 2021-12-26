@@ -1,4 +1,5 @@
-from src.GraphInterface import GraphInterface
+from GraphInterface import GraphInterface
+
 
 class DiGraph(GraphInterface):
 
@@ -17,7 +18,7 @@ class DiGraph(GraphInterface):
         return self.nodes
 
     def all_in_edges_of_node(self, id1: int) -> dict:
-        return self.nodes[id1].Edgeout
+        return self.nodes[id1].Edgein
 
     def all_out_edges_of_node(self, id1: int) -> dict:
         return self.nodes[id1].Edgeout
@@ -26,8 +27,9 @@ class DiGraph(GraphInterface):
         return self.mc
 
     def add_edge(self, id1: int, id2: int, weight: float) -> bool:
-        if self.nodes[id1] is None or self.nodes[id2] is None:
+        if id1 is not self.nodes or id2 is not self.nodes:
             return False
+        self.edges[(id1, id2)] = weight
         self.nodes[id1].Edgeout[id2] = weight
         self.nodes[id2].Edgein[id1] = weight
         self.mc += 1
@@ -42,10 +44,9 @@ class DiGraph(GraphInterface):
 
 
     def remove_node(self, node_id: int) -> bool:
-        if self.nodes._contains_(node_id):
-              self.nodes.pop(node_id)
-              self.mc+=1
-              return True
+        if self.nodes.__contains__(node_id):
+            self.nodes.pop(node_id)
+            return True
         return False
 
     def remove_edge(self, node_id1: int, node_id2: int) -> bool:
@@ -60,35 +61,15 @@ class DiGraph(GraphInterface):
         return f'{self.nodes} 'f'{self.edges}'
 
 
-class Node():
-    def __init__(self, id: int,weight:float, pos: tuple = None):
-        self.id = id
+class Node:
+    def __init__(self, key: int, pos: tuple) -> None:
+        self.key = key
         self.pos = pos
         self.Edgein = {}
         self.Edgeout = {}
-        self.weight = weight
+        self.weight ={}
 
 
     def __repr__(self):
-        return f'key = {self.id},' f'pos = {self.pos}'
+        return f'key = {self.key},' f'pos = {self.pos}'
 
-
-if __name__ == '__main__':
-    g = DiGraph()
-    # file= '../data/A5.json'
-    # # g.load_from_json("A3.json")
-    for n in range(3):
-     g.add_node(n)
-    g.add_edge(0, 1, 1)
-    g.add_edge(1, 0, 1.1)
-    g.add_edge(1, 2, 1.3)
-    # g.add_edge(2, 3, 1.1)
-    # g.add_edge(1, 3, 1.9)
-    g.remove_edge(1,0)
-    # g.add_edge(1, 3, 10)
-    # g.remove_node(1)
-
-    print(g)  # prints the __repr__ (func output)
-    print(g.get_all_v())  # prints a dict with all the graph's vertices.
-    # print(g.all_in_edges_of_node(1))
-    # print(g.all_out_edges_of_node(1))
