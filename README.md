@@ -40,6 +40,8 @@ https://www.youtube.com/watch?v=pVfj6mxhdMw
 the node has id, pos, edges-in and edges-out
 ---
 ### *the graph*
+![image](https://user-images.githubusercontent.com/92378800/147418604-1e0f6b71-fdf8-44bd-8801-17378b9d769f.png)
+
 ![graph](https://user-images.githubusercontent.com/93930203/147415745-2fe4c723-19f4-4b80-8682-93e6b615f062.jpeg)
 ---
 ### *MATPLOTLIB*
