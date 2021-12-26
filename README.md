@@ -40,7 +40,7 @@ https://www.youtube.com/watch?v=pVfj6mxhdMw
 the node has id, pos, edges-in and edges-out
 ---
 ### *the graph*
-![image](https://user-images.githubusercontent.com/92378800/147418604-1e0f6b71-fdf8-44bd-8801-17378b9d769f.png)
+
 
 ![graph](https://user-images.githubusercontent.com/93930203/147415745-2fe4c723-19f4-4b80-8682-93e6b615f062.jpeg)
 ---
@@ -48,5 +48,6 @@ the node has id, pos, edges-in and edges-out
 after the graph was created we create a graphical interface on the screen:
 
 plot graph -  The function takes the the graph that with all the nodes and the eges that connect to the nodes and draw it on the screen:
+![image](https://user-images.githubusercontent.com/92378800/147418604-1e0f6b71-fdf8-44bd-8801-17378b9d769f.png)
 ![WhatsApp Image 2021-12-26 at 20 06 07](https://user-images.githubusercontent.com/93930203/147416749-fabbdbac-9e54-44e5-9402-12d3cfeef92b.jpeg)
 
