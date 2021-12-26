@@ -1,24 +1,25 @@
+import copy
 from typing import List
 from GraphAlgoInterface import GraphAlgoInterface
 from GraphInterface import GraphInterface
 from DiGraph import DiGraph
-import sys
 import json
 import matplotlib.pyplot as plt
-import random
-import numpy as np
 
 
 class GraphAlgo(GraphAlgoInterface):
 
     def __init__(self, graph=DiGraph()) -> None:
         self.graph = graph
-
+        self.src = 0
+        self.mc = 0
+        self.listOfroads = {}
+        self.daddys = {}
+        self.D = {}
+        self.inf = float("inf")
 
     def get_graph(self) -> GraphInterface:
         return self.graph
-
-
 
     def load_from_json(self, file_name: str) -> bool:
         try:
@@ -65,72 +66,117 @@ class GraphAlgo(GraphAlgoInterface):
         file.close()
         return True
 
-    def dijkstra_algorithm(graph, start_node):
-        unvisited_nodes = list(graph.nodes())
-        shortest_path = {}
-        previous_nodes = {}
-        max_value = sys.maxsize
-        for node in unvisited_nodes:
-            shortest_path[node] = max_value
-        shortest_path[start_node] = 0
-        while unvisited_nodes:
-            current_min_node = None
-            for node in unvisited_nodes:  # Iterate over the nodes
-                if current_min_node == None:
-                    current_min_node = node
-                elif shortest_path[node] < shortest_path[current_min_node]:
-                    current_min_node = node
-
-            neighbors = graph.get_outgoing_edges(current_min_node)
-            for neighbor in neighbors:
-                tentative_value = shortest_path[current_min_node] + graph.value(current_min_node, neighbor)
-                if tentative_value < shortest_path[neighbor]:
-                    shortest_path[neighbor] = tentative_value
-                    previous_nodes[neighbor] = current_min_node
-
-            unvisited_nodes.remove(current_min_node)
-
-        return previous_nodes, shortest_path
 
     def shortest_path(self, id1: int, id2: int) -> (float, list):
-        """
-        Returns the shortest path from node id1 to node id2 using Dijkstra's Algorithm
-        @param id1: The start node id
-        @param id2: The end node id
-        @return: The distance of the path, a list of the nodes ids that the path goes through
-        Example:
-#      >>> from GraphAlgo import GraphAlgo
-#       >>> g_algo = GraphAlgo()
-#        >>> g_algo.addNode(0)
-#        >>> g_algo.addNode(1)
-#        >>> g_algo.addNode(2)
-#        >>> g_algo.addEdge(0,1,1)
-#        >>> g_algo.addEdge(1,2,4)
-#        >>> g_algo.shortestPath(0,1)
-#        (1, [0, 1])
-#        >>> g_algo.shortestPath(0,2)
-#        (5, [0, 1, 2])
-        Notes:
-        If there is no path between id1 and id2, or one of them dose not exist the function returns (float('inf'),[])
-        More info:
-        https://en.wikipedia.org/wiki/Dijkstra's_algorithm
-        """
-        raise NotImplementedError
+         self.dijk(id1)
+         self.Bpath(id2)
+         return (self.D[id2],self.listOfroads[id2])
+
+
+    def findAway(self, list: list, s: int):
+        list1 = []
+        list1.append(s)
+        list.remove(s)
+        count = 0
+        index = 0
+        n = s
+        while list:
+            self.dijk(n)
+            min = self.D.get(list[0])
+            for j in list:
+                if self.D.get(j) <= min:
+                    min, index= self.D.get(j),j
+            count += min
+            n = index
+            list.remove(n)
+            list1.append(n)
+        list1.append(s)
+        self.dijk(n)
+        count += self.D.get(s)
+        return [list1, count]
 
     def TSP(self, node_lst: List[int]) -> (List[int], float):
-        """
-        Finds the shortest path that visits all the nodes in the list
-        :param node_lst: A list of nodes id's
-        :return: A list of the nodes id's in the path, and the overall distance
-        """
+        min = self.inf
+        list1= []
+        for i in node_lst:
+            flag = self.findAway(copy.deepcopy(node_lst),i)
+            if flag[1] < min:
+                min = flag[1]
+                list1 = flag[0]
+        return (list1,min)
+
 
     def centerPoint(self) -> (int, float):
-        """
-        Finds the node that has the shortest distance to it's farthest node.
-        :return: The nodes id, min-maximum distance
-        """
+        num = (0, self.inf)
+        for n in self.graph.nodes:
+            self.dijk(n)
+            max1 = (n, max(self.D.values()))
+            if num[1] > max1[1]:
+                num = max1
+        list = []
+        list.append(num)
+        return list
 
-    def plot_graph(self):
+    def __repr__(self) -> str:
+        return f'{self.graph}'
+
+
+    def dijk(self, src: int) -> bool:
+        if src == self.src and self.graph.mc == self.mc:
+            return False
+        else:
+            self.src = src
+            list = []
+            self.initE(self.daddys, list)
+            while len(list) !=0:# check the min
+                min_ = self.inf
+                minM = -self.inf
+                for i in list:
+                    if min_ > self.D[i]:
+                        minM = i
+                        min_ = self.D[i]
+                if minM != -self.inf:
+                    list.remove(minM)
+                if minM == -self.inf:
+                    return
+                for e in self.graph.all_out_edges_of_node(minM): #update the weight
+                    update = self.D[minM] + self.graph.edges[(minM, e)]
+                    if update < self.D[e]:
+                        self.D[e] = update
+                        self.daddys[e] = minM
+            return True
+
+
+    def initE(self, parents: dict, list: list): # if there is edge between nodes put a weight or infinity
+        parents[self.src] = self.src
+        self.D[self.src] = 0.0
+        self.listOfroads[self.src] = []
+        list.append(self.src)
+        for i in self.graph.nodes.keys():
+           if i != self.src:
+              self.D[i] = self.inf
+              parents[i] = self.inf
+              list.append(i)
+              self.listOfroads[i] = []
+
+
+    def Bpath(self, d: int): # add a path between two nodes
+        if len(self.listOfroads[d]) != 0:
+            return
+        self.listOfroads[d] = []
+        if d == self.src:
+            self.listOfroads[d].append(d)
+            return
+        dad = self.daddys[d]
+        if dad == self.inf:
+            return
+        if dad in self.listOfroads:
+            self.Bpath(dad)
+        self.listOfroads[d].extend(self.listOfroads[dad])
+        self.listOfroads[d].append(d)
+
+
+    def plot_graph(self): # the matplotlib part
         g = self.graph
         nodes = g.nodes
         plt.xlabel(" X-Axis ")
@@ -155,26 +201,3 @@ class GraphAlgo(GraphAlgoInterface):
         plt.show()
 
 
-
-
-if __name__ == '__main__':
-    g = DiGraph()  # creates an empty directed graph
-    # for n in range(4):
-    #     g.add_node(n)
-    # g.add_edge(0, 1, 1)
-    # g.add_edge(1, 0, 1.1)
-    # g.add_edge(1, 2, 1.3)
-    # g.add_edge(2, 3, 1.1)
-    # g.add_edge(1, 3, 1.9)
-    # g.remove_edge(1, 3)
-    # g.add_edge(1, 3, 10)
-    print(g)  # prints the __repr__ (func output)
-    # print(g.get_all_v())  # prints a dict with all the graph's vertices.
-    # print(g.all_in_edges_of_node(1))
-    # print(g.all_out_edges_of_node(1))
-    g_algo = GraphAlgo(g)
-    # print(g_algo.shortest_path(0, 3))
-    # g_algo.plot_graph()
-    g_algo.load_from_json('../data/A4.json')
-    # print(g_algo)
-    g_algo.plot_graph()
