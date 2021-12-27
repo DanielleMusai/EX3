@@ -58,5 +58,5 @@ ___
 this is the link for our wiki 
 you see ther the compering between the 2 projects
 https://github.com/DanielleMusai/EX3/wiki
-note: we did the lest project separate
+note: we did the last project separate
 ___
