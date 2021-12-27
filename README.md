@@ -9,7 +9,7 @@
 Written by Eden Mor and Danielle Musai.  
 In this assignment we had to implement a data structure of a directed weighted directed graph 
 In Python, the implementation includes the diGraph class as well as the GraphAlgo class. The center idea is to use the previous implementation of our previous assignment and show it in Python, then we needed to compere our solution performance for our previous implementation in Java.
----
+___
 ### *the interfaces we needed to implement in the class GraphAlgo:*
 * get_graph – returns the directed graph on which the algorithm works on.
 * save_to_json – Saves the graph in JSON format to a file
@@ -33,7 +33,7 @@ In Python, the implementation includes the diGraph class as well as the GraphAlg
 ---
 ### *Links*
 ---
-in order to umplement the shortestpath algorithem we based on the Dijkstra's algorithm:
+in order to implement the shortestpath algorithem we based on the Dijkstra's algorithm:
 more infurmation about Dijkstra's algorithm:  
 https://en.wikipedia.org/wiki/Dijkstra%27s_algorithm
 https://www.youtube.com/watch?v=pVfj6mxhdMw
@@ -53,4 +53,10 @@ after the graph was created we create a graphical interface on the screen:
 plot graph -  The function takes the  graph that with all the nodes and the edges that connect to the nodes and draw it on the screen:
 ![image](https://user-images.githubusercontent.com/92378800/147418604-1e0f6b71-fdf8-44bd-8801-17378b9d769f.png)
 ![WhatsApp Image 2021-12-26 at 20 06 07](https://user-images.githubusercontent.com/93930203/147416749-fabbdbac-9e54-44e5-9402-12d3cfeef92b.jpeg)
-
+___
+### *wiki
+this is the link for our wiki 
+you see ther the compering between the 2 projects
+https://github.com/DanielleMusai/EX3/wiki
+note: we did the lest project separate
+___
