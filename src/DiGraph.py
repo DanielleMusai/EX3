@@ -1,5 +1,5 @@
 from GraphInterface import GraphInterface
-
+import random
 
 class DiGraph(GraphInterface):
 
@@ -27,27 +27,28 @@ class DiGraph(GraphInterface):
         return self.mc
 
     def add_edge(self, id1: int, id2: int, weight: float) -> bool:
-        if id1 is not self.nodes or id2 is not self.nodes:
-            return False
-        self.edges[(id1, id2)] = weight
-        self.nodes[id1].Edgeout[id2] = weight
-        self.nodes[id2].Edgein[id1] = weight
-        self.mc += 1
-        return True
+        if id1 in self.nodes and id2 in self.nodes:
+          self.edges[(id1, id2)] = weight
+          self.nodes[id1].Edgeout[id2] = weight
+          self.nodes[id2].Edgein[id1] = weight
+          self.mc += 1
+          return True
+        return False
 
     def add_node(self, node_id: int, pos: tuple = None) -> bool:
         if node_id in self.nodes:
             return False
-        self.nodes[node_id] = Node(node_id, pos)
-        self.mc += 1
-        return True
-
+        else:
+            self.nodes[node_id] = Node(node_id, pos)
+            self.mc += 1  # update mc
+            return True
 
     def remove_node(self, node_id: int) -> bool:
         if self.nodes.__contains__(node_id):
             self.nodes.pop(node_id)
             return True
         return False
+
 
     def remove_edge(self, node_id1: int, node_id2: int) -> bool:
         if node_id1 in self.nodes[node_id2].Edgein and node_id2 in self.nodes[node_id1].Edgeout:
@@ -56,6 +57,7 @@ class DiGraph(GraphInterface):
             self.mc += 1
             return True
         return False
+
 
     def __repr__(self):
         return f'{self.nodes} 'f'{self.edges}'
