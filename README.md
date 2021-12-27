@@ -7,8 +7,8 @@
 ## *project Explanation*
 ---
 Written by Eden Mor and Danielle Musai.  
-In this task we had to implement a data structure of a directed weighted directed graph 
-In Python, the implementation includes the diGraph class as well as the GraphAlgo class. The center idea is to use the previous implementation of our previous task and show it in Python, then we needed to compere our solution performance for our previous implementation in Java.
+In this assignment we had to implement a data structure of a directed weighted directed graph 
+In Python, the implementation includes the diGraph class as well as the GraphAlgo class. The center idea is to use the previous implementation of our previous assignment and show it in Python, then we needed to compere our solution performance for our previous implementation in Java.
 ---
 ### *the interfaces we needed to implement in the class GraphAlgo:*
 * get_graph – returns the directed graph on which the algorithm works on.
