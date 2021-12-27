@@ -5,7 +5,9 @@ from GraphInterface import GraphInterface
 from DiGraph import DiGraph
 import json
 import matplotlib.pyplot as plt
-
+import random
+import numpy as np
+from numpy import random
 
 class GraphAlgo(GraphAlgoInterface):
 
@@ -68,9 +70,18 @@ class GraphAlgo(GraphAlgoInterface):
 
 
     def shortest_path(self, id1: int, id2: int) -> (float, list):
-         self.dijk(id1)
-         self.Bpath(id2)
-         return (self.D[id2],self.listOfroads[id2])
+         if id2 not in self.graph.nodes or id1 not in self.graph.nodes:
+             list =[]
+             list.append(self.inf)
+             list.append([])
+         if id2 is None and id1 is None:
+             return 0
+         if id1 == id2:# equal
+             return 0, id1
+         else:
+             self.dijk(id1)
+             self.Bpath(id2)
+             return (self.D[id2],self.listOfroads[id2])
 
 
     def findAway(self, list: list, s: int):
@@ -122,58 +133,56 @@ class GraphAlgo(GraphAlgoInterface):
 
 
     def dijk(self, src: int) -> bool:
-        if src == self.src and self.graph.mc == self.mc:
-            return False
-        else:
-            self.src = src
-            list = []
-            self.initE(self.daddys, list)
-            while len(list) !=0:# check the min
-                min_ = self.inf
-                minM = -self.inf
-                for i in list:
-                    if min_ > self.D[i]:
-                        minM = i
-                        min_ = self.D[i]
-                if minM != -self.inf:
-                    list.remove(minM)
-                if minM == -self.inf:
-                    return
-                for e in self.graph.all_out_edges_of_node(minM): #update the weight
-                    update = self.D[minM] + self.graph.edges[(minM, e)]
-                    if update < self.D[e]:
-                        self.D[e] = update
-                        self.daddys[e] = minM
-            return True
-
+        self.src = src
+        list = []
+        self.initE(self.daddys, list)
+        while len(list) != 0:  # check the min
+            min_ = self.inf
+            minM = -self.inf
+            for i in list:
+                if min_ > self.D[i]:
+                    minM = i
+                    min_ = self.D[i]
+            if minM != -self.inf:
+                list.remove(minM)
+            if minM == -self.inf:
+                return
+            for e in self.graph.all_out_edges_of_node(minM):  # update the weight
+                update = self.D[minM] + self.graph.edges[(minM, e)]
+                if update < self.D[e]:
+                    self.D[e] = update
+                    self.daddys[e] = minM
+        return True
 
     def initE(self, parents: dict, list: list): # if there is edge between nodes put a weight or infinity
-        parents[self.src] = self.src
-        self.D[self.src] = 0.0
-        self.listOfroads[self.src] = []
-        list.append(self.src)
         for i in self.graph.nodes.keys():
-           if i != self.src:
-              self.D[i] = self.inf
-              parents[i] = self.inf
-              list.append(i)
-              self.listOfroads[i] = []
+            if i == self.src:
+                parents[self.src] = -1
+                self.D[self.src] = 0
+                self.listOfroads[self.src] = []
+                list.append(self.src)
+            else:
+                self.D[i] = self.inf
+                parents[i] = self.inf
+                list.append(i)
+                self.listOfroads[i] = []
 
 
-    def Bpath(self, d: int): # add a path between two nodes
-        if len(self.listOfroads[d]) != 0:
+
+    def Bpath(self, i :int): # add a path between two nodes
+        if self.listOfroads[i].__len__() != 0:
             return
-        self.listOfroads[d] = []
-        if d == self.src:
-            self.listOfroads[d].append(d)
+        if i == self.src:
+            self.listOfroads[i].append(i)
             return
-        dad = self.daddys[d]
-        if dad == self.inf:
+        c = self.daddys[i]
+        v = self.listOfroads[i]
+        if c == self.inf:
             return
-        if dad in self.listOfroads:
-            self.Bpath(dad)
-        self.listOfroads[d].extend(self.listOfroads[dad])
-        self.listOfroads[d].append(d)
+        if self.listOfroads.__contains__(c):
+            self.Bpath(c)
+        v.extend(self.listOfroads[c])
+        v.append(i)
 
 
     def plot_graph(self): # the matplotlib part
@@ -199,5 +208,3 @@ class GraphAlgo(GraphAlgoInterface):
                              arrowprops=dict(facecolor='black', arrowstyle='<| -'))
 
         plt.show()
-
-
