@@ -9,6 +9,7 @@ import random
 import numpy as np
 from numpy import random
 
+
 class GraphAlgo(GraphAlgoInterface):
 
     def __init__(self, graph=DiGraph()) -> None:
