@@ -1,5 +1,5 @@
-# DirectedwightedGraph
-
+# DirectedwightedGraph- Python 
+## EX3
 <img width="589" alt="Screenshot 2021-12-27 103258" src="https://user-images.githubusercontent.com/92378800/147452351-c14c4ecd-bb31-41ac-b074-c90ad70d6dad.png">
 
 
