@@ -38,10 +38,10 @@ class DiGraph(GraphInterface):
     def add_node(self, node_id: int, pos: tuple = None) -> bool:
         if node_id in self.nodes:
             return False
-        else:
-            self.nodes[node_id] = Node(node_id, pos)
-            self.mc += 1  # update mc
-            return True
+        self.nodes[node_id] = Node(node_id, pos)
+        self.mc += 1
+        return True
+
 
     def remove_node(self, node_id: int) -> bool:
         if self.nodes.__contains__(node_id):
